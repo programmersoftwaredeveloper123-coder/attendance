@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Verify Email - OUR LANGUAGE</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(
+                135deg,
+                #0f172a,
+                #1d4ed8,
+                #2563eb
+            );
+            padding: 20px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin-bottom: 15px;
+            color: #111827;
+        }
+
+        p {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        #status {
+            font-weight: bold;
+        }
+
+        .success {
+            color: #16a34a;
+        }
+
+        .error {
+            color: #dc2626;
+        }
+
+        .loading {
+            color: #2563eb;
+        }
+
+        button {
+            border: none;
+            padding: 12px 22px;
+            border-radius: 10px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            display: none;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+
+        <div
+            class="icon"
+            id="icon"
+        >
+            📧
+        </div>
+
+        <h1>
+            Email Verification
+        </h1>
+
+        <p id="status" class="loading">
+            Verifying your email...
+        </p>
+
+        <button
+            id="backButton"
+            onclick="goToUserPage()"
+        >
+            Go to Login
+        </button>
+
+    </div>
+
+
+    <script>
+
+        const API_URL = 'http://localhost:5000';
+
+        async function verifyEmail() {
+
+            const params = new URLSearchParams(
+                window.location.search
+            );
+
+            const token = params.get('token');
+
+            const statusElement =
+                document.getElementById('status');
+
+            const iconElement =
+                document.getElementById('icon');
+
+            const backButton =
+                document.getElementById('backButton');
+
+
+            if (!token) {
+
+                iconElement.textContent = '❌';
+
+                statusElement.textContent =
+                    'Verification token is missing.';
+
+                statusElement.className = 'error';
+
+                backButton.style.display = 'inline-block';
+
+                return;
+            }
+
+
+            try {
+
+                const response = await fetch(
+                    `${API_URL}/api/auth/verify-email?token=${encodeURIComponent(token)}`
+                );
+
+
+                const data = await response.json();
+
+
+                if (data.success) {
+
+                    iconElement.textContent = '✅';
+
+                    statusElement.textContent =
+                        'Your email has been verified successfully.';
+
+                    statusElement.className = 'success';
+
+                } else {
+
+                    iconElement.textContent = '❌';
+
+                    statusElement.textContent =
+                        data.message || 'Email verification failed.';
+
+                    statusElement.className = 'error';
+
+                }
+
+            } catch (error) {
+
+                console.error(error);
+
+                iconElement.textContent = '⚠️';
+
+                statusElement.textContent =
+                    'Could not connect to the server.';
+
+                statusElement.className = 'error';
+
+            }
+
+            backButton.style.display = 'inline-block';
+        }
+
+
+        function goToUserPage() {
+
+            window.location.href = 'user.html';
+
+        }
+
+
+        verifyEmail();
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="clean-white" data-font="inter" data-font-size="medium">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Language: Daily Group Attendance - User Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for modern UI icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="user-body">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+    <!-- Accessibility Screen Reader Announcer -->
+    <div id="sr-announcer" class="sr-only" aria-live="assertive"></div>
+
+    <!-- Application Wrapper -->
+    <div id="app-wrapper" class="app-wrapper">
+
+        <!-- ================= AUTHENTICATION VIEW ================= -->
+        <div id="auth-view" class="auth-view-container">
+            <div class="auth-card glass-card">
+                <div class="auth-header">
+                    <h1 class="auth-logo-title"><i class="fa-solid fa-graduation-cap"></i> Our Language</h1>
+                    <p class="auth-subtitle">Daily Group Attendance & Learning System</p>
+                </div>
+
+                <!-- Auth Navigation Tabs -->
+                <div class="auth-tabs" role="tablist">
+                    <button type="button" class="auth-tab-btn active" data-target="login-form-container" role="tab" aria-selected="true">Login</button>
+                    <button type="button" class="auth-tab-btn" data-target="register-form-container" role="tab" aria-selected="false">Register</button>
+                    <button type="button" class="auth-tab-btn" data-target="forgot-form-container" role="tab" aria-selected="false">Forgot Password</button>
+                </div>
+
+                <!-- 1. LOGIN FORM -->
+                <div id="login-form-container" class="auth-form-panel active">
+                    <form id="login-form" novalidate>
+                        <div class="form-group">
+                            <label for="login-username"><i class="fa-solid fa-user"></i> Username or Email</label>
+                            <input type="text" id="login-username" class="form-control" required autocomplete="username" placeholder="Enter your username or email">
+                            <span class="error-message" id="login-username-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password"><i class="fa-solid fa-lock"></i> Password</label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="login-password" class="form-control" required autocomplete="current-password" placeholder="Enter your password">
+                                <button type="button" class="toggle-password-btn" aria-label="Toggle password visibility"><i class="fa-solid fa-eye"></i></button>
+                            </div>
+                            <span class="error-message" id="login-password-error"></span>
+                        </div>
+                        <div class="form-row remember-row">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="remember-me"> Remember me
+                            </label>
+                            <a href="#" class="forgot-link" id="switch-to-forgot">Forgot Password?</a>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block" id="login-submit-btn">
+                            <span class="btn-text">Login to System</span>
+                            <span class="spinner" style="display: none;"></span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- 2. REGISTRATION FORM -->
+                <div id="register-form-container" class="auth-form-panel">
+                    <form id="register-form" novalidate>
+                        <div class="form-group">
+                            <label for="reg-fullname"><i class="fa-solid id-card"></i> Full Name</label>
+                            <input type="text" id="reg-fullname" class="form-control" required placeholder="e.g. John Edward">
+                            <span class="error-message" id="reg-fullname-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-cluster"><i class="fa-solid fa-layer-group"></i> Cluster</label>
+                            <select id="reg-cluster" class="form-control" required>
+                                <option value="" disabled selected>Select your study cluster</option>
+                                <option value="MAINTENANCE">MAINTENANCE</option>
+                                <option value="NETWORK">NETWORK</option>
+                                <option value="SOFTWARE">SOFTWARE</option>
+                                <option value="DATA SCIENCE">DATA SCIENCE</option>
+                            </select>
+                            <span class="error-message" id="reg-cluster-error"></span>
+                        </div>
+                        <div class="form-row phone-row">
+                            <div class="form-group country-code-group">
+                                <label for="reg-country-code">Code</label>
+                                <select id="reg-country-code" class="form-control">
+                                    <option value="+255" selected>Tanzania (+255)</option>
+                                    <option value="+254">Kenya (+254)</option>
+                                    <option value="+256">Uganda (+256)</option>
+                                    <option value="+250">Rwanda (+250)</option>
+                                    <option value="+257">Burundi (+257)</option>
+                                    <option value="+1">USA (+1)</option>
+                                    <option value="+44">UK (+44)</option>
+                                </select>
+                            </div>
+                            <div class="form-group phone-number-group">
+                                <label for="reg-phone">Phone Number</label>
+                                <input type="tel" id="reg-phone" class="form-control" required placeholder="712345678">
+                                <span class="error-message" id="reg-phone-error"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-email"><i class="fa-solid fa-envelope"></i> Email Address</label>
+                            <input type="email" id="reg-email" class="form-control" required placeholder="user@example.com">
+                            <span class="error-message" id="reg-email-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-username"><i class="fa-solid fa-at"></i> Username</label>
+                            <input type="text" id="reg-username" class="form-control" required placeholder="Choose a unique username">
+                            <span class="error-message" id="reg-username-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-password"><i class="fa-solid fa-lock"></i> Password</label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="reg-password" class="form-control" required placeholder="Create a strong password">
+                                <button type="button" class="toggle-password-btn" aria-label="Toggle password visibility"><i class="fa-solid fa-eye"></i></button>
+                            </div>
+                            <!-- Live Password Strength Indicator -->
+                            <div class="password-strength-meter">
+                                <div id="strength-bar" class="strength-bar"></div>
+                            </div>
+                            <small id="password-hint" class="form-text">Must be 8+ chars with uppercase, lowercase, number & symbol.</small>
+                            <span class="error-message" id="reg-password-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-repeat-password"><i class="fa-solid fa-lock"></i> Confirm Password</label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="reg-repeat-password" class="form-control" required placeholder="Re-enter your password">
+                                <button type="button" class="toggle-password-btn" aria-label="Toggle password visibility"><i class="fa-solid fa-eye"></i></button>
+                            </div>
+                            <span class="error-message" id="reg-repeat-password-error"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block" id="reg-submit-btn">
+                            <span class="btn-text">Register Account</span>
+                            <span class="spinner" style="display: none;"></span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- 3. EMAIL VERIFICATION STEP (FRONTEND ARCHITECTURE) -->
+                <div id="verify-form-container" class="auth-form-panel" style="display: none;">
+                    <div class="verification-notice">
+                        <h3><i class="fa-solid fa-envelope-circle-check"></i> Email Verification</h3>
+                        <p>We have dispatched a verification code to your email (<span id="verify-email-display"></span>). Please enter the 6-digit code below.</p>
+                        <!-- BACKEND INTEGRATION POINT: Connect SMTP/SendGrid/NodeMailer API for real code generation -->
+                    </div>
+                    <form id="verify-form" novalidate>
+                        <div class="form-group">
+                            <label for="verify-code">Verification Code</label>
+                            <input type="text" id="verify-code" class="form-control text-center tracking-wide" maxlength="6" placeholder="123456" required>
+                            <span class="error-message" id="verify-code-error"></span>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-block" id="verify-submit-btn">Verify Account</button>
+                        <button type="button" class="btn btn-link btn-block" id="resend-code-btn">Resend Code</button>
+                    </form>
+                </div>
+
+                <!-- 4. FORGOT PASSWORD FORM -->
+                <div id="forgot-form-container" class="auth-form-panel" style="display: none;">
+                    <form id="forgot-form" novalidate>
+                        <h3><i class="fa-solid fa-key"></i> Reset Password</h3>
+                        <p class="form-description">Enter your registered email address to receive password reset instructions.</p>
+                        <div class="form-group">
+                            <label for="forgot-email">Email Address</label>
+                            <input type="email" id="forgot-email" class="form-control" required placeholder="user@example.com">
+                            <span class="error-message" id="forgot-email-error"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block" id="forgot-submit-btn">Send Reset Code</button>
+                        <button type="button" class="btn btn-secondary btn-block" id="back-to-login-btn">Back to Login</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ================= MAIN DASHBOARD VIEW (HIDDEN UNTIL AUTHENTICATED) ================= -->
+        <div id="main-dashboard-view" class="main-dashboard-container" style="display: none;">
+
+            <!-- SIDEBAR NAVIGATION -->
+            <aside id="sidebar" class="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-brand">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>Our Language</span>
+                    </div>
+                    <button id="sidebar-close-btn" class="sidebar-close-btn" aria-label="Close Sidebar"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <div class="sidebar-user-mini">
+                    <div class="sidebar-avatar-wrapper">
+                        <img id="sidebar-user-avatar" src="" alt="User Avatar" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%23ccc\'><path d=\'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z\'/></svg>'">
+                    </div>
+                    <div class="sidebar-user-info">
+                        <h4 id="sidebar-username-display">User Name</h4>
+                        <span id="sidebar-cluster-display" class="cluster-badge">Cluster</span>
+                    </div>
+                </div>
+
+                <nav class="sidebar-nav" role="navigation">
+                    <ul>
+                        <li><a href="#dashboard" class="nav-link active" data-section="section-dashboard"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+                        <li><a href="#attendance" class="nav-link" data-section="section-attendance"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
+                        <li><a href="#study-reports" class="nav-link" data-section="section-reports"><i class="fa-solid fa-book-open"></i> Daily Study Report</a></li>
+                        <li><a href="#materials" class="nav-link" data-section="section-materials"><i class="fa-solid fa-folder-open"></i> Materials</a></li>
+                        <li><a href="#chat" class="nav-link" data-section="section-chat"><i class="fa-solid fa-comments"></i> Chat & Community <span id="chat-badge-count" class="badge-count" style="display:none;">0</span></a></li>
+                        <li><a href="#admin-chat" class="nav-link" data-section="section-admin-chat"><i class="fa-solid fa-headset"></i> Chat with Admin</a></li>
+                        <li><a href="#calendar" class="nav-link" data-section="section-calendar"><i class="fa-solid fa-calendar-days"></i> Calendar</a></li>
+                        <li><a href="#profile" class="nav-link" data-section="section-profile"><i class="fa-solid fa-user-gear"></i> My Profile</a></li>
+                        <li><a href="#settings" class="nav-link" data-section="section-settings"><i class="fa-solid fa-gear"></i> Settings</a></li>
+                    </ul>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <button id="install-app-btn" class="btn btn-outline btn-block" style="display: none;"><i class="fa-solid fa-download"></i> Install Web App</button>
+                    <button id="logout-btn" class="btn btn-danger btn-block"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+                </div>
+            </aside>
+
+            <!-- MAIN CONTENT WRAPPER -->
+            <div class="main-content-wrapper">
+                
+                <!-- TOP HEADER -->
+                <header class="top-header">
+                    <div class="header-left">
+                        <button id="sidebar-toggle-btn" class="sidebar-toggle-btn" aria-label="Toggle Sidebar"><i class="fa-solid fa-bars"></i></button>
+                        <div class="live-clock-widget">
+                            <span id="live-time" class="live-time">00:00:00</span>
+                            <span id="live-date" class="live-date">Day, DD Month YYYY</span>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <!-- Notifications Dropdown Trigger -->
+                        <div class="dropdown notification-dropdown">
+                            <button id="notification-bell-btn" class="header-icon-btn" aria-label="Notifications">
+                                <i class="fa-solid fa-bell"></i>
+                                <span id="notification-badge" class="badge-count" style="display: none;">0</span>
+                            </button>
+                            <div id="notification-panel" class="dropdown-panel notification-panel" style="display: none;">
+                                <div class="dropdown-header">
+                                    <h4>Notifications</h4>
+                                    <button id="mark-all-read-btn" class="text-btn">Mark all read</button>
+                                </div>
+                                <div id="notification-list" class="dropdown-body">
+                                    <div class="empty-state-small">No notifications yet.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- User Profile Header Dropdown -->
+                        <div class="user-profile-header-trigger" id="profile-dropdown-trigger">
+                            <img id="header-user-avatar" src="" alt="Avatar">
+                            <span id="header-user-name" class="header-user-name">User</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- CONTENT SECTIONS -->
+                <main class="content-body">
+
+                    <!-- SECTION 1: DASHBOARD -->
+                    <section id="section-dashboard" class="app-section active">
+                        <div class="welcome-banner glass-card">
+                            <div class="welcome-banner-content">
+                                <h2 id="welcome-message-heading">Welcome, User</h2>
+                                <p>Here is your daily attendance and learning overview for today in Tanzania time (<span id="tz-timezone-label">Africa/Dar_es_Salaam</span>).</p>
+                            </div>
+                            <div class="welcome-banner-stats">
+                                <div class="stat-pill">
+                                    <i class="fa-solid fa-shield-halved"></i>
+                                    <div>
+                                        <span>Cluster</span>
+                                        <strong id="dash-cluster-val">-</strong>
+                                    </div>
+                                </div>
+                                <div class="stat-pill">
+                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                    <div>
+                                        <span>Session Duration</span>
+                                        <strong id="dash-session-duration">00:00:00</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-grid">
+                            <div class="card stat-card">
+                                <div class="stat-icon bg-blue"><i class="fa-solid fa-calendar-check"></i></div>
+                                <div class="stat-details">
+                                    <h3>Today's Attendance</h3>
+                                    <p id="dash-today-attendance-status" class="status-badge present">PRESENT</p>
+                                    <small>Login: <span id="dash-login-time">-</span></small>
+                                </div>
+                            </div>
+                            <div class="card stat-card">
+                                <div class="stat-icon bg-green"><i class="fa-solid fa-book"></i></div>
+                                <div class="stat-details">
+                                    <h3>Study Reports</h3>
+                                    <p id="dash-reports-count">0</p>
+                                    <small>Submitted reports</small>
+                                </div>
+                            </div>
+                            <div class="card stat-card">
+                                <div class="stat-icon bg-purple"><i class="fa-solid fa-folder"></i></div>
+                                <div class="stat-details">
+                                    <h3>Available Materials</h3>
+                                    <p id="dash-materials-count">0</p>
+                                    <small>Uploaded by admin</small>
+                                </div>
+                            </div>
+                            <div class="card stat-card">
+                                <div class="stat-icon bg-orange"><i class="fa-solid fa-comments"></i></div>
+                                <div class="stat-details">
+                                    <h3>Unread Messages</h3>
+                                    <p id="dash-messages-count">0</p>
+                                    <small>Community & Admin</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="recent-activity-wrapper card">
+                            <h3>Session Audit Trail</h3>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Login Date</th>
+                                            <th>Login Time</th>
+                                            <th>Logout Time</th>
+                                            <th>Session Duration</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="session-audit-tbody">
+                                        <tr>
+                                            <td colspan="5" class="text-center">No session history available yet.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- SECTION 2: ATTENDANCE -->
+                    <section id="section-attendance" class="app-section">
+                        <div class="section-header">
+                            <h2><i class="fa-solid fa-calendar-check"></i> Daily Attendance Management</h2>
+                            <p>Rule: Users who enter before 18:00 (6:00 PM EAT) are marked <strong>PRESENT</strong>. After 18:00, unrecorded attendance is marked <strong>ABSENT</strong>.</p>
+                        </div>
+                        <div class="card">
+                            <div class="attendance-status-box">
+                                <div class="current-status-display">
+                                    <span>Today's Status:</span>
+                                    <strong id="attendance-live-status-badge" class="status-badge present">PRESENT</strong>
+                                </div>
+                                <div class="attendance-meta">
+                                    <div><i class="fa-solid fa-right-to-bracket"></i> Login Time: <span id="att-login-time-display">-</span></div>
+                                    <div><i class="fa-solid fa-right-from-bracket"></i> Logout Time: <span id="att-logout-time-display">Active Session</span></div>
+                                    <div><i class="fa-solid fa-hourglass-half"></i> Duration: <span id="att-session-duration-display">00:00:00</span></div>
+                                </div>
+                            </div>
+
+                            <h3>Attendance History Records</h3>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Login Time</th>
+                                            <th>Logout Time</th>
+                                            <th>Duration</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="full-attendance-tbody">
+                                        <tr><td colspan="5" class="text-center">No attendance records yet.</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- SECTION 3: DAILY STUDY REPORT -->
+                    <section id="section-reports" class="app-section">
+                        <div class="section-header">
+                            <h2><i class="fa-solid fa-book-open"></i> Daily Study Report Submission</h2>
+                            <p>Record your daily learning activities, progress, and challenges.</p>
+                        </div>
+
+                        <div class="grid-2-col">
+                            <div class="card">
+                                <h3>Submit New Report</h3>
+                                <form id="study-report-form" novalidate>
+                                    <div class="form-group">
+                                        <label for="report-date">Date</label>
+                                        <input type="date" id="report-date" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="report-cluster">Cluster</label>
+                                        <input type="text" id="report-cluster" class="form-control" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="report-topic">Topic / Area Studied</label>
+                                        <input type="text" id="report-topic" class="form-control" required placeholder="e.g. Advanced Python Generators & Iterators">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="report-description">Study Description</label>
+                                        <textarea id="report-description" class="form-control" rows="4" required placeholder="Describe what you covered today..."></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="report-has-challenge">Did you experience any challenge?</label>
+                                        <select id="report-has-challenge" class="form-control" required>
+                                            <option value="NO" selected>No</option>
+                                            <option value="YES">Yes</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" id="challenge-desc-group" style="display: none;">
+                                        <label for="report-challenge-desc">Describe the challenge</label>
+                                        <textarea id="report-challenge-desc" class="form-control" rows="3" placeholder="Explain the obstacle or difficulty faced..."></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-block">Save Study Report</button>
+                                </form>
+                            </div>
+
+                            <div class="card">
+                                <h3>My Study History</h3>
+                                <div id="study-reports-history-list" class="reports-history-list">
+                                    <div class="empty-state">No study reports submitted yet.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- SECTION 4: MATERIALS -->
+                    <section id="section-materials" class="app-section">
+                        <div class="section-header">
+                            <h2><i class="fa-solid fa-folder-open"></i> Study Materials</h2>
+                            <p>Access and download learning resources uploaded by administrators.</p>
+                        </div>
+                        <div class="card">
+                            <div class="filter-bar">
+                                <div class="search-box">
+                                    <i class="fa-solid fa-search"></i>
+                                    <input type="text" id="material-search-input" class="form-control" placeholder="Search materials by title or keyword...">
+                                </div>
+                                <div class="filter-dropdown">
+                                    <select id="material-type-filter" class="form-control">
+                                        <option value="ALL">All File Types</option>
+                                        <option value="PDF">PDF</option>
+                                        <option value="WORD">Word (.docx/.doc)</option>
+                                        <option value="POWERPOINT">PowerPoint (.pptx/.ppt)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>File Name</th>
+                                            <th>Type</th>
+                                            <th>Upload Date</th>
+                                            <th>Size</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="materials-tbody">
+                                        <tr><td colspan="5" class="text-center">No materials available yet.</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- SECTION 5: CHAT & COMMUNITY -->
+                    <section id="section-chat" class="app-section">
+                        <div class="section-header">
+                            <h2><i class="fa-solid fa-comments"></i> Community Chat</h2>
+                            <p>Real-time collaboration and messaging with registered group members.</p>
+                        </div>
+                        <div class="chat-container card">
+                            <div class="chat-sidebar">
+                                <div class="chat-search">
+                                    <input type="text" id="chat-user-search" class="form-control" placeholder="Search users...">
+                                </div>
+                                <div id="chat-users-list" class="chat-users-list">
+                                    <div class="empty-state-small">No other users registered yet.</div>
+                                </div>
+                            </div>
+                            <div class="chat-main">
+                                <div id="chat-active-header" class="chat-active-header">
+                                    <div class="chat-recipient-info">
+                                        <span id="chat-active-name">Select a conversation</span>
+                                        <small id="chat-active-status">Offline</small>
+                                    </div>
+                                </div>
+                                <div id="chat-messages-box" class="chat-messages-box">
+                                    <div class="empty-state">Select a user from the left sidebar to start chatting.</div>
+                                </div>
+                                <form id="chat-input-form" class="chat-input-form" style="display: none;">
+                                    <input type="text" id="chat-message-input" class="form-control" placeholder="Type a message... (use @username to mention)" autocomplete="off">
+                                    <button type="submit" class="btn btn-primary" aria-label="Send Message"><i class="fa-solid fa-paper-plane"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- SECTION 6: CHAT WITH ADMIN -->
+                    <section id="section-admin-chat" class="app-section">
+                        <div class="section-header">
+                            <h2><i class="fa-solid fa-headset"></i> Support & Admin Chat</h2>
+                            <p>Direct communication channel with system administrators.</p>
+                        </div>
+                        <div class="card admin-chat-card">
+                            <div id="admin-chat-messages-box" class="chat-messages-box admin-messages-box">
+                                <div class="empty-state">No messages with admin yet. Send a message to initiate support.</div>
+                            </div>
+                            <form id="admin-chat-input-form" class="chat-input-form">
+                                <input type="text" id="admin-chat-message-input" class="form-control" placeholder="Message administrators..." autocomplete="off" required>
+                                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Send to Admin</button>
+                            </form>
+                        </div>
+                    </section>
+
+                    <!-- SECTION 7: CALENDAR -->
+                    <section id="section-calendar" class="app-section">
+                        <div class="section-header">
+                            <h2><i class="fa-solid fa-calendar-days"></i> Calendar</h2>
+                            <p>Tanzanian Local Date and Schedule View.</p>
+                        </div>
+                        <div class="card calendar-card">
+                            <div class="calendar-header-controls">
+                                <button id="cal-prev-month" class="btn btn-outline"><i class="fa-solid fa-chevron-left"></i> Previous</button>
+                                <h3 id="cal-month-year-display">Month Year</h3>
+                                <button id="cal-next-month" class="btn btn-outline">Next <i class="fa-solid fa-chevron-right"></i></button>
+                            </div>
+                            <div class="calendar-grid-wrapper">
+                                <div class="calendar-weekdays">
+                                    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                                </div>
+                                <div id="calendar-days-grid" class="calendar-days-grid"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- SECTION 8: PROFILE -->
+                    <section id="section-profile" class="app-section">
+                        <div class="section-header">
+                            <h2><i class="fa-solid fa-user-gear"></i> My Profile & Account Settings</h2>
+                            <p>Manage your personal information, profile photo, and camera capture.</p>
+                        </div>
+                        <div class="grid-2-col">
+                            <div class="card text-center">
+                                <div class="profile-avatar-container">
+                                    <img id="profile-view-avatar" src="" alt="Profile Picture" class="profile-large-avatar">
+                                    <div class="avatar-actions">
+                                        <label for="avatar-file-input" class="btn btn-outline btn-sm"><i class="fa-solid fa-upload"></i> Upload Photo</label>
+                                        <input type="file" id="avatar-file-input" accept="image/*" style="display: none;">
+                                        <button type="button" id="open-camera-modal-btn" class="btn btn-outline btn-sm"><i class="fa-solid fa-camera"></i> Use Camera</button>
+                                    </div>
+                                </div>
+                                <h3 id="profile-card-name">Full Name</h3>
+                                <p id="profile-card-username" class="text-muted">@username</p>
+                                <span id="profile-card-cluster" class="cluster-badge">Cluster</span>
+                            </div>
+
+                            <div class="card">
+                                <h3>Edit Personal Information</h3>
+                                <form id="edit-profile-form" novalidate>
+                                    <div class="form-group">
+                                        <label for="edit-fullname">Full Name</label>
+                                        <input type="text" id="edit-fullname" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-email">Email Address</label>
+                                        <input type="email" id="edit-email" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-phone">Phone Number</label>
+                                        <input type="tel" id="edit-phone" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-cluster">Cluster</label>
+                                        <select id="edit-cluster" class="form-control" required>
+                                            <option value="MAINTENANCE">MAINTENANCE</option>
+                                            <option value="NETWORK">NETWORK</option>
+                                            <option value="SOFTWARE">SOFTWARE</option>
+                                            <option value="DATA SCIENCE">DATA SCIENCE</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-block">Update Profile</button>
+                                </form>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- SECTION 9: SETTINGS -->
+                    <section id="section-settings" class="app-section">
+                        <div class="section-header">
+                            <h2><i class="fa-solid fa-gear"></i> System Preferences & Settings</h2>
+                            <p>Customize fonts, themes, language, sound accessibility, and web app options.</p>
+                        </div>
+                        <div class="card">
+                            <div class="settings-grid">
+                                <div class="form-group">
+                                    <label for="setting-theme-select"><i class="fa-solid fa-palette"></i> Visual Theme (10 Options)</label>
+                                    <select id="setting-theme-select" class="form-control">
+                                        <option value="clean-white">1. Clean White</option>
+                                        <option value="soft-blue">2. Soft Blue</option>
+                                        <option value="academic">3. Academic</option>
+                                        <option value="sky">4. Sky</option>
+                                        <option value="mint">5. Mint</option>
+                                        <option value="lavender">6. Lavender</option>
+                                        <option value="pearl">7. Pearl</option>
+                                        <option value="ocean">8. Ocean</option>
+                                        <option value="sand">9. Sand</option>
+                                        <option value="modern-gray">10. Modern Gray</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="setting-font-select"><i class="fa-solid fa-font"></i> Font Family</label>
+                                    <select id="setting-font-select" class="form-control">
+                                        <option value="inter">Inter</option>
+                                        <option value="roboto">Roboto</option>
+                                        <option value="poppins">Poppins</option>
+                                        <option value="open-sans">Open Sans</option>
+                                        <option value="system-default">System Default</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="setting-fontsize-select"><i class="fa-solid fa-text-height"></i> Font Size</label>
+                                    <select id="setting-fontsize-select" class="form-control">
+                                        <option value="small">Small</option>
+                                        <option value="medium" selected>Medium</option>
+                                        <option value="large">Large</option>
+                                        <option value="extra-large">Extra Large</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="setting-language-select"><i class="fa-solid fa-language"></i> Language (Supports RTL for Arabic)</label>
+                                    <select id="setting-language-select" class="form-control">
+                                        <option value="en" selected>English</option>
+                                        <option value="sw">Swahili</option>
+                                        <option value="fr">French</option>
+                                        <option value="es">Spanish</option>
+                                        <option value="ar">Arabic (RTL)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fa-solid fa-volume-high"></i> Sound / Voice Assistance</label>
+                                    <div class="toggle-switch-wrapper">
+                                        <label class="switch">
+                                            <input type="checkbox" id="setting-sound-toggle">
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <span id="sound-status-label">Disabled</span>
+                                    </div>
+                                    <small class="form-text">Reads important UI announcements and button actions aloud.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </main>
+
+                <!-- FOOTER -->
+                <footer class="app-footer">
+                    <p>System Developed and Designed by Son of Israel</p>
+                </footer>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ================= MODALS ================= -->
+
+    <!-- CAMERA CAPTURE MODAL -->
+    <div id="camera-modal" class="modal" style="display: none;" role="dialog" aria-modal="true">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3>Capture Profile Picture</h3>
+                <button type="button" class="modal-close-btn" id="close-camera-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="video-wrapper">
+                    <video id="camera-video" autoplay playsinline width="100%" height="auto"></video>
+                    <canvas id="camera-canvas" style="display: none;"></canvas>
+                </div>
+                <div class="modal-actions mt-3">
+                    <button type="button" id="take-snapshot-btn" class="btn btn-primary"><i class="fa-solid fa-camera"></i> Capture Photo</button>
+                    <button type="button" id="cancel-camera-btn" class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT SOURCE -->
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="clean-white" data-font="inter" data-font-size="medium">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Language: Daily Group Attendance - Administrator Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="admin-body">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
+    <div id="sr-announcer" class="sr-only" aria-live="assertive"></div>
+
+    <div id="app-wrapper" class="app-wrapper">
+
+        <!-- ================= ADMIN AUTHENTICATION VIEW ================= -->
+        <div id="admin-auth-view" class="auth-view-container">
+            <div class="auth-card glass-card admin-auth-card">
+                <div class="auth-header">
+                    <h1 class="auth-logo-title"><i class="fa-solid fa-shield-halved"></i> Admin Portal</h1>
+                    <p class="auth-subtitle">Our Language System Administration</p>
+                </div>
+
+                <div class="auth-tabs" role="tablist">
+                    <button type="button" class="auth-tab-btn active" data-target="admin-login-panel" role="tab">Admin Login</button>
+                    <button type="button" class="auth-tab-btn" data-target="admin-register-panel" role="tab">Admin Registration</button>
+                </div>
+
+                <!-- ADMIN LOGIN FORM -->
+                <div id="admin-login-panel" class="auth-form-panel active">
+                    <form id="admin-login-form" novalidate>
+                        <div class="form-group">
+                            <label for="admin-login-email"><i class="fa-solid fa-envelope"></i> Admin Email</label>
+                            <input type="email" id="admin-login-email" class="form-control" required placeholder="admin@example.com">
+                            <span class="error-message" id="admin-login-email-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-login-password"><i class="fa-solid fa-lock"></i> Password</label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="admin-login-password" class="form-control" required placeholder="Enter admin password">
+                                <button type="button" class="toggle-password-btn" aria-label="Toggle password visibility"><i class="fa-solid fa-eye"></i></button>
+                            </div>
+                            <span class="error-message" id="admin-login-password-error"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block" id="admin-login-submit-btn">Login to Admin Dashboard</button>
+                    </form>
+                </div>
+
+                <!-- ADMIN REGISTRATION FORM -->
+                <div id="admin-register-panel" class="auth-form-panel">
+                    <form id="admin-register-form" novalidate>
+                        <div class="form-group">
+                            <label for="admin-reg-name">Full Name</label>
+                            <input type="text" id="admin-reg-name" class="form-control" required placeholder="Admin Full Name">
+                            <span class="error-message" id="admin-reg-name-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-reg-email">Email Address</label>
+                            <input type="email" id="admin-reg-email" class="form-control" required placeholder="admin@example.com">
+                            <span class="error-message" id="admin-reg-email-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-reg-phone">Phone Number</label>
+                            <input type="tel" id="admin-reg-phone" class="form-control" required placeholder="712345678">
+                            <span class="error-message" id="admin-reg-phone-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-reg-password">Password</label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="admin-reg-password" class="form-control" required placeholder="Strong admin password">
+                                <button type="button" class="toggle-password-btn" aria-label="Toggle password visibility"><i class="fa-solid fa-eye"></i></button>
+                            </div>
+                            <span class="error-message" id="admin-reg-password-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-reg-repeat-password">Confirm Password</label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="admin-reg-repeat-password" class="form-control" required placeholder="Re-enter password">
+                                <button type="button" class="toggle-password-btn" aria-label="Toggle password visibility"><i class="fa-solid fa-eye"></i></button>
+                            </div>
+                            <span class="error-message" id="admin-reg-repeat-password-error"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block" id="admin-reg-submit-btn">Register Admin Account</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= ADMIN DASHBOARD VIEW ================= -->
+        <div id="admin-dashboard-view" class="main-dashboard-container" style="display: none;">
+
+            <!-- SIDEBAR -->
+            <aside id="sidebar" class="sidebar admin-sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-brand">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>Admin Portal</span>
+                    </div>
+                    <button id="sidebar-close-btn" class="sidebar-close-btn" aria-label="Close Sidebar"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <div class="sidebar-user-mini">
+                    <div class="sidebar-avatar-wrapper">
+                        <img id="admin-sidebar-avatar" src="" alt="Admin Avatar" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%23ccc\'><path d=\'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z\'/></svg>'">
+                    </div>
+                    <div class="sidebar-user-info">
+                        <h4 id="admin-sidebar-name">Administrator</h4>
+                        <span class="cluster-badge admin-badge">System Admin</span>
+                    </div>
+                </div>
+
+                <nav class="sidebar-nav" role="navigation">
+                    <ul>
+                        <li><a href="#dashboard" class="nav-link active" data-section="admin-section-dashboard"><i class="fa-solid fa-chart-pie"></i> Dashboard</a></li>
+                        <li><a href="#users" class="nav-link" data-section="admin-section-users"><i class="fa-solid fa-users-gear"></i> User Management</a></li>
+                        <li><a href="#attendance" class="nav-link" data-section="admin-section-attendance"><i class="fa-solid fa-calendar-check"></i> Attendance Records</a></li>
+                        <li><a href="#reports" class="nav-link" data-section="admin-section-reports"><i class="fa-solid fa-book-open"></i> Study Reports</a></li>
+                        <li><a href="#materials" class="nav-link" data-section="admin-section-materials"><i class="fa-solid fa-folder-plus"></i> Material Management</a></li>
+                        <li><a href="#chats" class="nav-link" data-section="admin-section-chats"><i class="fa-solid fa-headset"></i> User Support Chats <span id="admin-chat-badge" class="badge-count" style="display:none;">0</span></a></li>
+                        <li><a href="#activity" class="nav-link" data-section="admin-section-activity"><i class="fa-solid fa-clock-rotate-left"></i> System Activity Log</a></li>
+                        <li><a href="#profile" class="nav-link" data-section="admin-section-profile"><i class="fa-solid fa-user-shield"></i> Admin Profile</a></li>
+                    </ul>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <button id="admin-logout-btn" class="btn btn-danger btn-block"><i class="fa-solid fa-right-from-bracket"></i> Admin Logout</button>
+                </div>
+            </aside>
+
+            <!-- MAIN CONTENT AREA -->
+            <div class="main-content-wrapper">
+                <header class="top-header">
+                    <div class="header-left">
+                        <button id="sidebar-toggle-btn" class="sidebar-toggle-btn" aria-label="Toggle Sidebar"><i class="fa-solid fa-bars"></i></button>
+                        <div class="live-clock-widget">
+                            <span id="live-time" class="live-time">00:00:00</span>
+                            <span id="live-date" class="live-date">Day, DD Month YYYY</span>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <div class="user-profile-header-trigger">
+                            <img id="admin-header-avatar" src="" alt="Avatar">
+                            <span id="admin-header-name">Admin</span>
+                        </div>
+                    </div>
+                </header>
+
+                <main class="content-body">
+
+                    <!-- ADMIN SECTION 1: DASHBOARD -->
+                    <section id="admin-section-dashboard" class="app-section active">
+                        <div class="welcome-banner glass-card">
+                            <h2>Welcome, <span id="admin-welcome-name">Administrator</span></h2>
+                            <p>Real-time system overview and statistics for Our Language Daily Group Attendance.</p>
+                        </div>
+
+                        <div class="dashboard-grid">
+                            <div class="card stat-card">
+                                <div class="stat-icon bg-blue"><i class="fa-solid fa-users"></i></div>
+                                <div class="stat-details">
+                                    <h3>Total Users</h3>
+                                    <p id="admin-stat-total-users">0</p>
+                                    <small>Registered accounts</small>
+                                </div>
+                            </div>
+                            <div class="card stat-card">
+                                <div class="stat-icon bg-green"><i class="fa-solid fa-user-check"></i></div>
+                                <div class="stat-details">
+                                    <h3>Present Today</h3>
+                                    <p id="admin-stat-present-users">0</p>
+                                    <small>Active before 18:00 EAT</small>
+                                </div>
+                            </div>
+                            <div class="card stat-card">
+                                <div class="stat-icon bg-orange"><i class="fa-solid fa-user-xmark"></i></div>
+                                <div class="stat-details">
+                                    <h3>Absent Today</h3>
+                                    <p id="admin-stat-absent-users">0</p>
+                                    <small>Not entered by 18:00 EAT</small>
+                                </div>
+                            </div>
+                            <div class="card stat-card">
+                                <div class="stat-icon bg-purple"><i class="fa-solid fa-folder-open"></i></div>
+                                <div class="stat-details">
+                                    <h3>Total Materials</h3>
+                                    <p id="admin-stat-total-materials">0</p>
+                                    <small>Uploaded files</small>
+                                </div>
+                            </div>
+                            <div class="card stat-card">
+                                <div class="stat-icon bg-blue"><i class="fa-solid fa-book-open"></i></div>
+                                <div class="stat-details">
+                                    <h3>Study Reports</h3>
+                                    <p id="admin-stat-total-reports">0</p>
+                                    <small>Submitted reports</small>
+                                </div>
+                            </div>
+                            <div class="card stat-card">
+                                <div class="stat-icon bg-orange"><i class="fa-solid fa-comments"></i></div>
+                                <div class="stat-details">
+                                    <h3>Unread Support Msgs</h3>
+                                    <p id="admin-stat-unread-msgs">0</p>
+                                    <small>Pending review</small>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ADMIN SECTION 2: USER MANAGEMENT -->
+                    <section id="admin-section-users" class="app-section">
+                        <div class="section-header space-between">
+                            <div>
+                               <h2><i class="fa-solid fa-users-gear"></i> User Management</h2>
+                               <p>Add, edit, search, and manage registered system users.</p>
+                            </div>
+                            <button type="button" id="open-add-user-modal-btn" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i> Add New User</button>
+                        </div>
+                        <div class="card">
+                            <div class="filter-bar">
+                                <div class="search-box">
+                                    <i class="fa-solid fa-search"></i>
+                                    <input type="text" id="admin-user-search" class="form-control" placeholder="Search by name, username or email...">
+                                </div>
+                                <div class="filter-dropdown">
+                                    <select id="admin-cluster-filter" class="form-control">
+                                        <option value="ALL">All Clusters</option>
+                                        <option value="MAINTENANCE">MAINTENANCE</option>
+                                        <option value="NETWORK">NETWORK</option>
+                                        <option value="SOFTWARE">SOFTWARE</option>
+                                        <option value="DATA SCIENCE">DATA SCIENCE</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Profile</th>
+                                            <th>Full Name</th>
+                                            <th>Username</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Cluster</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-users-tbody">
+                                        <tr><td colspan="8" class="text-center">No users registered yet.</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ADMIN SECTION 3: ATTENDANCE RECORDS -->
+                    <section id="admin-section-attendance" class="app-section">
+                        <div class="section-header">
+                            <h2><i class="fa-solid fa-calendar-check"></i> System Attendance Records</h2>
+                            <p>View attendance logs for all registered users across clusters.</p>
+                        </div>
+                        <div class="card">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>User</th>
+                                            <th>Cluster</th>
+                                            <th>Date</th>
+                                            <th>Login Time</th>
+                                            <th>Logout Time</th>
+                                            <th>Duration</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-attendance-tbody">
+                                        <tr><td colspan="7" class="text-center">No attendance records yet.</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ADMIN SECTION 4: STUDY REPORTS -->
+                    <section id="admin-section-reports" class="app-section">
+                        <div class="section-header">
+                            <h2><i class="fa-solid fa-book-open"></i> User Study Reports</h2>
+                            <p>Review daily study submissions from members.</p>
+                        </div>
+                        <div class="card">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>User</th>
+                                            <th>Cluster</th>
+                                            <th>Date</th>
+                                            <th>Topic</th>
+                                            <th>Description</th>
+                                            <th>Challenge</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-reports-tbody">
+                                        <tr><td colspan="6" class="text-center">No study reports submitted yet.</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ADMIN SECTION 5: MATERIAL MANAGEMENT -->
+                    <section id="admin-section-materials" class="app-section">
+                        <div class="section-header space-between">
+                            <div>
+                                <h2><i class="fa-solid fa-folder-plus"></i> Material Management</h2>
+                                <p>Upload PDF, Word, and PowerPoint resources for users.</p>
+                            </div>
+                        </div>
+                        <div class="grid-2-col">
+                            <div class="card">
+                                <h3>Upload Material</h3>
+                                <form id="admin-upload-material-form" novalidate>
+                                    <div class="form-group">
+                                        <label for="material-file">Select File (PDF, DOC/DOCX, PPT/PPTX)</label>
+                                        <input type="file" id="material-file" class="form-control" accept=".pdf,.doc,.docx,.ppt,.pptx" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="material-title">Document Title</label>
+                                        <input type="text" id="material-title" class="form-control" required placeholder="e.g. Advanced Python Lecture Notes">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-block">Upload Material</button>
+                                </form>
+                            </div>
+
+                            <div class="card">
+                                <h3>Manage Uploaded Materials</h3>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Title</th>
+                                                <th>Type</th>
+                                                <th>Date</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="admin-materials-tbody">
+                                            <tr><td colspan="4" class="text-center">No materials uploaded yet.</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ADMIN SECTION 6: USER SUPPORT CHATS -->
+                    <section id="admin-section-chats" class="app-section">
+                        <div class="section-header">
+                            <h2><i class="fa-solid fa-headset"></i> User Support Chats</h2>
+                            <p>Respond to inquiries sent by registered users.</p>
+                        </div>
+                        <div class="chat-container card">
+                            <div class="chat-sidebar">
+                                <div id="admin-chat-users-list" class="chat-users-list">
+                                    <div class="empty-state-small">No messages from users yet.</div>
+                                </div>
+                            </div>
+                            <div class="chat-main">
+                                <div id="admin-chat-active-header" class="chat-active-header">
+                                    <span id="admin-chat-active-name">Select a user conversation</span>
+                                </div>
+                                <div id="admin-chat-messages-box" class="chat-messages-box">
+                                    <div class="empty-state">Select a user to view support messages.</div>
+                                </div>
+                                <form id="admin-chat-reply-form" class="chat-input-form" style="display: none;">
+                                    <input type="text" id="admin-chat-reply-input" class="form-control" placeholder="Type reply as admin..." autocomplete="off" required>
+                                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ADMIN SECTION 7: SYSTEM ACTIVITY LOG -->
+                    <section id="admin-section-activity" class="app-section">
+                        <div class="section-header">
+                            <h2><i class="fa-solid fa-clock-rotate-left"></i> System Activity Log</h2>
+                            <p>Audit trail of actual system actions and events.</p>
+                        </div>
+                        <div class="card">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Timestamp (EAT)</th>
+                                            <th>Action / Event</th>
+                                            <th>Details</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-activity-tbody">
+                                        <tr><td colspan="3" class="text-center">No activity recorded yet.</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ADMIN SECTION 8: ADMIN PROFILE -->
+                    <section id="admin-section-profile" class="app-section">
+                        <div class="section-header">
+                            <h2><i class="fa-solid fa-user-shield"></i> Admin Profile</h2>
+                            <p>Manage administrative account details.</p>
+                        </div>
+                        <div class="card text-center" style="max-width: 600px; margin: 0 auto;">
+                            <div class="profile-avatar-container">
+                                <img id="admin-profile-avatar" src="" alt="Admin Avatar" class="profile-large-avatar">
+                                <div class="avatar-actions">
+                                    <label for="admin-avatar-file" class="btn btn-outline btn-sm"><i class="fa-solid fa-upload"></i> Upload Admin Photo</label>
+                                    <input type="file" id="admin-avatar-file" accept="image/*" style="display: none;">
+                                </div>
+                            </div>
+                            <h3 id="admin-profile-name">Administrator</h3>
+                            <p id="admin-profile-email" class="text-muted">admin@example.com</p>
+                        </div>
+                    </section>
+
+                </main>
+
+                <footer class="app-footer">
+                    <p>System Developed and Designed by Son of Israel</p>
+                </footer>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ================= ADMIN MODALS ================= -->
+    <div id="admin-user-modal" class="modal" style="display: none;" role="dialog" aria-modal="true">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3 id="admin-modal-title">Add New User</h3>
+                <button type="button" class="modal-close-btn" id="close-admin-user-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="admin-user-modal-form" novalidate>
+                    <input type="hidden" id="modal-user-id">
+                    <div class="form-group">
+                        <label for="modal-user-fullname">Full Name</label>
+                        <input type="text" id="modal-user-fullname" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-user-cluster">Cluster</label>
+                        <select id="modal-user-cluster" class="form-control" required>
+                            <option value="MAINTENANCE">MAINTENANCE</option>
+                            <option value="NETWORK">NETWORK</option>
+                            <option value="SOFTWARE">SOFTWARE</option>
+                            <option value="DATA SCIENCE">DATA SCIENCE</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-user-phone">Phone Number</label>
+                        <input type="tel" id="modal-user-phone" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-user-email">Email Address</label>
+                        <input type="email" id="modal-user-email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-user-username">Username</label>
+                        <input type="text" id="modal-user-username" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-user-password">Password</label>
+                        <input type="password" id="modal-user-password" class="form-control" required placeholder="User password">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Save User</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
